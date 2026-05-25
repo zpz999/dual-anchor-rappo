@@ -1,0 +1,18 @@
+# Conceptual placeholder configuration.
+# Values that would enable reproduction are intentionally omitted.
+
+release_mode: "conceptual_only"
+
+private_components:
+  retrieval_strategy: "withheld"
+  generation_model: "withheld"
+  reward_design: "withheld"
+  optimization_recipe: "withheld"
+  prompt_templates: "withheld"
+  training_data_pipeline: "withheld"
+
+public_description:
+  goal: "balance image grounding and textual coherence"
+  domain: "medical report generation"
+  disclosure_level: "high-level overview only"
+

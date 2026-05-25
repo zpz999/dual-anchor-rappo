@@ -1,0 +1,57 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Environments
+.env
+.venv/
+venv/
+env/
+
+# Logs and runs
+logs/
+runs/
+wandb/
+tensorboard/
+*.log
+
+# Checkpoints and model weights
+checkpoints/
+outputs/
+*.pt
+*.pth
+*.bin
+*.safetensors
+*.ckpt
+
+# Medical data and private assets
+data/
+images/
+reports/
+dicom/
+*.dcm
+*.nii
+*.nii.gz
+*.mha
+*.mhd
+*.jpg
+*.jpeg
+*.png
+*.csv
+*.jsonl
+
+# Local archives and installers
+*.zip
+*.tar
+*.tar.gz
+*.exe
+
+# Submission artifacts
+*.pdf
+*.docx
+*.pptx
+

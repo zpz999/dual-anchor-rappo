@@ -1,0 +1,35 @@
+\begin{algorithm}[t]
+\caption{Conceptual Dual-Perspective Alignment for Medical Report Generation}
+\label{alg:conceptual_alignment}
+\begin{algorithmic}[1]
+\Require Private medical image-report data, private evidence system, private report generator
+\Ensure Conceptually aligned report generator
+\State Build an internal evidence store from permitted private materials.
+\For{each private training case}
+  \State Collect relevant contextual evidence using the internal retrieval system.
+  \State Generate a candidate report draft under a private context template.
+  \State Assess the draft from a visual-grounding perspective.
+  \State Assess the draft from a textual-coherence perspective.
+  \State Combine the private feedback signals.
+  \State Update the generator with the internal alignment procedure.
+\EndFor
+\State \Return aligned generator
+\end{algorithmic}
+\end{algorithm}
+
+\begin{algorithm}[t]
+\caption{Conceptual Inference}
+\label{alg:conceptual_inference}
+\begin{algorithmic}[1]
+\Require Medical image study, private retrieval system, aligned generator
+\Ensure Draft report for expert review
+\State Retrieve limited contextual evidence for the image study.
+\State Construct a private generation context.
+\State Generate a report draft with the aligned generator.
+\State \Return draft report
+\end{algorithmic}
+\end{algorithm}
+
+% Implementation details are intentionally withheld, including model choices,
+% objective functions, feedback formulas, prompts, alignment policies,
+% optimization schedules, and dataset-specific processing.
