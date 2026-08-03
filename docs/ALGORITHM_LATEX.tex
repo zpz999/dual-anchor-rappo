@@ -1,35 +1,42 @@
 \begin{algorithm}[t]
-\caption{Conceptual Dual-Perspective Alignment for Medical Report Generation}
-\label{alg:conceptual_alignment}
+\caption{Dual-Anchor Reward-Aware PPO Training}
+\label{alg:dual_anchor_rappo}
 \begin{algorithmic}[1]
-\Require Private medical image-report data, private evidence system, private report generator
-\Ensure Conceptually aligned report generator
-\State Build an internal evidence store from permitted private materials.
-\For{each private training case}
-  \State Collect relevant contextual evidence using the internal retrieval system.
-  \State Generate a candidate report draft under a private context template.
-  \State Assess the draft from a visual-grounding perspective.
-  \State Assess the draft from a textual-coherence perspective.
-  \State Combine the private feedback signals.
-  \State Update the generator with the internal alignment procedure.
+\Require Image-report data $\mathcal{D}$, report corpus $\mathcal{M}$,
+maximum evidence count $k$, policy $\pi_\theta$, reference policy
+$\pi_{\mathrm{ref}}$
+\Ensure Aligned report-generation policy $\pi_\theta$
+\State Train image and text encoders with symmetric InfoNCE.
+\State Index training reports in the shared embedding space.
+\State Initialize $\pi_\theta$ with retrieval-conditioned NLL training.
+\For{each PPO update}
+  \State Retrieve adaptive evidence $E_i$ with leave-one-out filtering.
+  \State Assemble prompt $P_i$ from visual semantics and $E_i$.
+  \State Sample $\hat{Y}_i \sim \pi_\theta(\cdot \mid P_i)$.
+  \State Compute image-grounded reward $r_{\mathrm{IFR}}$.
+  \State Compute reference-guided reward $r_{\mathrm{RCR}}$.
+  \State $r_{\mathrm{DAR}} \gets
+  \lambda_I r_{\mathrm{IFR}} + \lambda_R r_{\mathrm{RCR}}$.
+  \State Update $\pi_\theta$ with clipped PPO and KL regularization to
+  $\pi_{\mathrm{ref}}$.
 \EndFor
-\State \Return aligned generator
+\State \Return $\pi_\theta$
 \end{algorithmic}
 \end{algorithm}
 
 \begin{algorithm}[t]
-\caption{Conceptual Inference}
-\label{alg:conceptual_inference}
+\caption{Dual-Anchor RAPPO Inference}
+\label{alg:dual_anchor_inference}
 \begin{algorithmic}[1]
-\Require Medical image study, private retrieval system, aligned generator
-\Ensure Draft report for expert review
-\State Retrieve limited contextual evidence for the image study.
-\State Construct a private generation context.
-\State Generate a report draft with the aligned generator.
-\State \Return draft report
+\Require Chest X-ray study $X$, trained retriever, aligned policy $\pi_\theta$
+\Ensure Draft report for qualified expert review
+\State Encode $X$ in the shared image-report embedding space.
+\State Retrieve adaptive evidence set $E$.
+\State Build a prompt from visual semantics and $E$.
+\State Generate $\hat{Y} \sim \pi_\theta(\cdot \mid P)$.
+\State \Return $\hat{Y}$
 \end{algorithmic}
 \end{algorithm}
 
-% Implementation details are intentionally withheld, including model choices,
-% objective functions, feedback formulas, prompts, alignment policies,
-% optimization schedules, and dataset-specific processing.
+% This repository intentionally omits patient data, executable training code,
+% checkpoints, private prompts, and infrastructure-specific hyperparameters.

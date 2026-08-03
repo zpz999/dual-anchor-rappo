@@ -1,33 +1,40 @@
-# Open Source Notes
+# Open-Source and Disclosure Notes
 
-This repository is intended to be an anonymized concept release only.
+This repository is the public companion for the ICME 2026 paper **Dual-Anchor
+Reward-Aware Reinforcement Learning for Medical Report Generation**.
 
-## Confidential Material Excluded
+## Disclosure Boundary
 
-- Original source code and experiment scripts.
-- Dataset files, image files, DICOM files, reports, annotations, or identifiers.
-- Model checkpoints, pretrained weight mirrors, tokenizer assets, and caches.
-- Private prompts, feedback formulas, alignment policies, and optimization
-  details.
-- Author names, affiliations, email addresses, submission IDs, or internal file
-  names.
+The repository mirrors information already described in the accepted paper:
 
-## Publication Policy
+- CLIP-style cross-modal retrieval;
+- adaptive Top-k evidence selection with leave-one-out filtering;
+- a Mistral-based retrieval-conditioned generator;
+- PPO alignment with Image-grounded Fidelity Reward (IFR) and
+  Reference-guided Coherence Reward (RCR);
+- reported MIMIC-CXR results and ablations.
 
-The public repository should describe only the general idea:
+It does not contain private medical data, executable production pipelines,
+checkpoints, private prompts, or infrastructure-specific training recipes.
 
-- retrieval-aware medical report generation;
-- two complementary feedback perspectives;
-- alignment toward grounded and coherent reports.
+## Data Governance
 
-It should not allow a reader to reconstruct the company's implementation,
-training recipe, evaluation setup, or proprietary engineering decisions.
+Never commit:
 
-## Maintenance Checklist
+- DICOM studies, images, reports, annotations, or patient identifiers;
+- cached embeddings that can be linked to patient records;
+- credentials, access tokens, private endpoints, or dataset access files;
+- model checkpoints derived from restricted data without explicit permission.
 
-- Review every commit before pushing.
-- Avoid adding files copied from the private workspace.
-- Avoid exact model names, exact parameters, exact prompts, and exact formulas.
-- Avoid examples that resemble private clinical records.
-- If a detailed file is accidentally pushed, rewrite public history or recreate
-  the repository rather than only adding a later cleanup commit.
+## Publication Maintenance
+
+- Update the citation when the official proceedings record and DOI are public.
+- Keep reported metrics synchronized with the accepted or camera-ready paper.
+- Clearly distinguish paper-reported results from independently reproduced runs.
+- Review every public commit for medical-data leakage and licensing issues.
+- Add a license only after the project owners have selected and approved one.
+
+## Responsible Use
+
+This project is intended for research. Generated reports require review by
+qualified clinicians and must not be treated as independent medical advice.
