@@ -1,72 +1,100 @@
-# Conceptual Algorithm Sketch
+# Conceptual Pseudocode
 
-This document intentionally avoids implementation-level pseudocode. It describes
-only the public-facing research idea and omits proprietary details required for
-reproduction.
+This document presents the method at the same level of disclosure as the ICME
+2026 paper. It is explanatory pseudocode, not a runnable training pipeline.
 
-## Concept
-
-The method aligns a report generator using two complementary forms of feedback:
-
-- **Visual grounding feedback:** encourages the generated report to remain
-  consistent with the target medical image.
-- **Textual coherence feedback:** encourages the generated report to remain
-  clinically coherent with reliable reference evidence.
-
-The private system combines these perspectives during alignment so that the
-generator does not over-rely on retrieved text while also avoiding visually
-unsupported statements.
-
-## Public Training Sketch
+## Stage 1: Cross-modal retrieval training
 
 ```text
 Input:
-  A private medical report generation dataset
-  A private evidence retrieval system
-  A private report generation model
-  Private feedback models and alignment code
+  Image-report pairs D = {(X_i, Y_i)}
+  Image encoder f_I and text encoder f_T
+
+For each mini-batch:
+  1. Encode images:  v_i = normalize(f_I(X_i))
+  2. Encode reports: t_i = normalize(f_T(Y_i))
+  3. Compute scaled cosine similarities s_ij
+  4. Optimize symmetric image-to-text and text-to-image InfoNCE
 
 Output:
-  An aligned report generator
-
-Conceptual steps:
-  1. Prepare a private evidence store from permitted training materials.
-  2. For each training case, collect relevant contextual evidence.
-  3. Ask the generator to draft a report under the available context.
-  4. Score the draft from a visual-grounding perspective.
-  5. Score the draft from a textual-coherence perspective.
-  6. Combine the private feedback signals.
-  7. Align the generator using the private optimization recipe.
+  A shared image-report embedding space and indexed report corpus M
 ```
 
-## Public Inference Sketch
+## Stage 2: Adaptive Top-k evidence construction
 
 ```text
 Input:
-  A medical image study
-  The aligned private generator
-  The private retrieval system
+  Target image X_i, report corpus M, maximum evidence count k
+
+1. Rank reports by image-report similarity.
+2. Keep reports close to the top-1 score under the relative threshold.
+3. Cap the evidence set at k while always retaining the best candidate.
+4. During training, exclude the matched ground-truth report and optionally
+   other reports from the same study.
 
 Output:
-  A generated report draft
-
-Conceptual steps:
-  1. Retrieve limited contextual evidence for the image study.
-  2. Build a private generation context.
-  3. Generate a report draft with the aligned model.
-  4. Return the draft for downstream expert review.
+  Evidence set E_i with 1 <= |E_i| <= k
 ```
 
-## Withheld Details
+## Stage 3: Retrieval-conditioned supervised initialization
 
-The following details are intentionally not disclosed:
+```text
+Input:
+  Visual semantic embedding z_i = f_I(X_i)
+  Retrieved evidence E_i
+  Mistral-based report generator pi_theta
 
-- retrieval scoring and filtering rules;
-- evidence construction and de-duplication policies;
-- prompt templates;
-- model names and model sizes;
-- feedback formulas and weighting;
-- private data selection policies;
-- training schedule and optimizer settings;
-- evaluation scripts and dataset-specific processing;
-- implementation code.
+1. Map z_i into a compact visual semantic prompt.
+2. Serialize the visual prompt and E_i into a structured instruction.
+3. Optimize negative log-likelihood on the reference report Y_i.
+
+Output:
+  Supervised retrieval-conditioned policy pi_theta
+```
+
+## Stage 4: Dual-Anchor PPO alignment
+
+```text
+Input:
+  Supervised policy pi_theta
+  Frozen reference policy pi_ref
+  Frozen image-report reward encoder
+  Frozen report reward encoder
+
+For each PPO update:
+  1. Retrieve adaptive evidence E_i for image X_i.
+  2. Sample a report Y_hat from pi_theta.
+  3. Compute IFR:
+       - image-to-text contrastive fidelity;
+       - text-to-image contrastive fidelity.
+  4. Compute RCR:
+       - reference-guided semantic consistency;
+       - clinical keyword coverage.
+  5. Combine rewards:
+       r_DAR = lambda_I * r_IFR + lambda_R * r_RCR
+  6. Normalize and clip rewards as configured.
+  7. Apply the clipped PPO objective with KL regularization to pi_ref.
+
+Output:
+  Dual-anchor aligned report-generation policy
+```
+
+## Inference
+
+```text
+Input:
+  Chest X-ray study X
+  Trained retriever and aligned generator
+
+1. Encode X and retrieve an adaptive evidence set E.
+2. Build the visual-semantic and evidence-conditioned prompt.
+3. Generate a report with the aligned policy.
+4. Return the report for qualified expert review.
+```
+
+## Intentionally Unreleased Components
+
+- patient data and dataset-specific preprocessing code;
+- exact prompts and infrastructure-specific training recipes;
+- executable reward-model, PPO, and evaluation implementations;
+- checkpoints, tokenizer assets, and private experiment logs.

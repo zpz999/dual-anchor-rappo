@@ -55,3 +55,7 @@ dicom/
 *.docx
 *.pptx
 
+# Public documentation assets extracted from the accepted paper
+!docs/assets/
+!docs/assets/*.png
+

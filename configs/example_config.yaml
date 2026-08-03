@@ -1,18 +1,55 @@
-# Conceptual placeholder configuration.
-# Values that would enable reproduction are intentionally omitted.
+# Paper-level, non-executable configuration schema.
+# Values required for full reproduction remain intentionally unspecified.
 
-release_mode: "conceptual_only"
+release:
+  mode: "paper_level_conceptual"
+  venue: "IEEE ICME 2026"
+  status: "accepted"
 
-private_components:
-  retrieval_strategy: "withheld"
-  generation_model: "withheld"
-  reward_design: "withheld"
-  optimization_recipe: "withheld"
-  prompt_templates: "withheld"
-  training_data_pipeline: "withheld"
+task:
+  name: "radiology_report_generation"
+  dataset: "MIMIC-CXR"
 
-public_description:
-  goal: "balance image grounding and textual coherence"
-  domain: "medical report generation"
-  disclosure_level: "high-level overview only"
+retrieval:
+  representation: "CLIP-style image-text embeddings"
+  selection: "adaptive_top_k"
+  leave_one_out: true
+  max_k: null
+  relative_threshold_delta: null
+
+generator:
+  family: "Mistral-7B-Instruct-v0.2"
+  conditioning:
+    - "visual_semantic_prompt"
+    - "retrieved_report_evidence"
+  supervised_initialization: true
+
+alignment:
+  algorithm: "PPO"
+  kl_regularization: true
+  reward:
+    name: "dual_anchor_reward"
+    components:
+      image_grounded_fidelity_reward: "IFR"
+      reference_guided_coherence_reward: "RCR"
+    lambda_image: null
+    lambda_reference: null
+
+evaluation:
+  metrics:
+    - "BLEU-1"
+    - "BLEU-2"
+    - "BLEU-3"
+    - "BLEU-4"
+    - "ROUGE-L"
+    - "METEOR"
+    - "CIDEr"
+    - "cosine_similarity"
+
+unreleased:
+  - "dataset preprocessing"
+  - "prompt templates"
+  - "exact optimization schedule"
+  - "executable reward and PPO code"
+  - "model checkpoints"
 

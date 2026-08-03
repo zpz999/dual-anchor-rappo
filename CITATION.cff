@@ -1,0 +1,39 @@
+cff-version: 1.2.0
+message: "If you use this work, please cite the ICME 2026 paper."
+title: "Dual-Anchor Reward-Aware Reinforcement Learning for Medical Report Generation"
+type: software
+authors:
+  - family-names: Gao
+    given-names: Haocheng
+  - family-names: Zhao
+    given-names: Peizhi
+  - family-names: Kong
+    given-names: Longteng
+  - family-names: Chen
+    given-names: Yu
+  - family-names: Zhou
+    given-names: Wanting
+repository-code: "https://github.com/zpz999/dual-anchor-rappo"
+keywords:
+  - medical report generation
+  - radiology
+  - retrieval-augmented generation
+  - reinforcement learning
+  - PPO
+  - multimodal alignment
+preferred-citation:
+  type: conference-paper
+  title: "Dual-Anchor Reward-Aware Reinforcement Learning for Medical Report Generation"
+  authors:
+    - family-names: Gao
+      given-names: Haocheng
+    - family-names: Zhao
+      given-names: Peizhi
+    - family-names: Kong
+      given-names: Longteng
+    - family-names: Chen
+      given-names: Yu
+    - family-names: Zhou
+      given-names: Wanting
+  collection-title: "2026 IEEE International Conference on Multimedia and Expo (ICME)"
+  year: 2026
