@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Reference-guided coherence">
+  <rect width="64" height="64" rx="16" fill="#F1EEFC"/>
+  <path d="M19 13h20l7 7v31H19z" fill="#FFFFFF" stroke="#6758C9" stroke-linejoin="round" stroke-width="3"/>
+  <path d="M39 13v8h7M25 29h14M25 36h14M25 43h9" fill="none" stroke="#6758C9" stroke-linecap="round" stroke-width="3"/>
+  <circle cx="16" cy="47" r="5" fill="#2CA58D"/>
+  <path d="M19 44l8-7" stroke="#2CA58D" stroke-linecap="round" stroke-width="2.5"/>
+</svg>

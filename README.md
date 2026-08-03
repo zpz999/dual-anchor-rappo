@@ -21,6 +21,18 @@
 
 </div>
 
+<p align="center">
+  <img src="docs/assets/dual_anchor_hero.png" width="100%" alt="Dual-Anchor RAPPO: radiograph and retrieved evidence flowing through complementary visual and textual reward anchors into a generated report" />
+</p>
+
+<p align="center">
+  <a href="#overview">Overview</a> &nbsp;•&nbsp;
+  <a href="#framework">Framework</a> &nbsp;•&nbsp;
+  <a href="docs/METHOD.md">Method</a> &nbsp;•&nbsp;
+  <a href="#experimental-results">Results</a> &nbsp;•&nbsp;
+  <a href="#citation">Citation</a>
+</p>
+
 ---
 
 ## Overview
@@ -76,14 +88,13 @@ PPO alignment with IFR + RCR
 Image-grounded and clinically coherent report
 ```
 
-| Component | Role |
-|---|---|
-| Cross-modal retriever | Learns a shared image-report space with symmetric InfoNCE. |
-| Adaptive Top-k evidence | Selects sample-dependent evidence while excluding trivial matches. |
-| Retrieval-conditioned generator | Combines compact visual semantics with retrieved report snippets. |
-| IFR | Rewards bidirectional image-to-text and text-to-image consistency. |
-| RCR | Rewards semantic consistency and clinical keyword coverage. |
-| PPO alignment | Optimizes task-level rewards while staying close to a reference policy. |
+| Icon | Component | Role |
+|:---:|---|---|
+| <img src="docs/assets/icons/retrieval.svg" width="42" alt="Retrieval icon" /> | **Cross-modal retrieval** | Learns a shared image-report space and selects adaptive Top-k evidence with leave-one-out filtering. |
+| <img src="docs/assets/icons/generation.svg" width="42" alt="Generation icon" /> | **Conditioned generation** | Combines compact visual semantics with retrieved report snippets. |
+| <img src="docs/assets/icons/image_anchor.svg" width="42" alt="Image anchor icon" /> | **Image anchor · IFR** | Rewards bidirectional image-to-text and text-to-image consistency. |
+| <img src="docs/assets/icons/reference_anchor.svg" width="42" alt="Reference anchor icon" /> | **Reference anchor · RCR** | Rewards semantic consistency and clinical keyword coverage. |
+| <img src="docs/assets/icons/alignment.svg" width="42" alt="Alignment icon" /> | **PPO alignment** | Optimizes task-level rewards while staying close to a reference policy. |
 
 For the paper-level formulation, see [Method Details](docs/METHOD.md) and
 [Conceptual Pseudocode](docs/PSEUDOCODE.md).
@@ -130,7 +141,9 @@ dual-anchor-rappo/
 |  |- PSEUDOCODE.md
 |  |- RESULTS.md
 |  `- assets/
-|     `- dual_anchor_framework.png
+|     |- dual_anchor_hero.png
+|     |- dual_anchor_framework.png
+|     `- icons/
 `- src/
    `- dual_anchor_pseudocode.py
 ```
